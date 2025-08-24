@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package stakeholders;
+
+option go_package = "proto/stakeholders";
+
+import "google/api/annotations.proto";
+
+service UserService {
+  rpc GetPaged(PagedRequest) returns (UsersPagedResponse) {
+    option (google.api.http) = {
+      get: "/api/users/paged"
+    };
+  }
+  rpc ToggleBlock(ToggleBlockRequest) returns (ToggleBlockResponse) {
+    option (google.api.http) = {
+      patch: "/api/users/{id}/block-toggle"
+      body: "*"
+    };
+  }
+}
+service PersonService{
+  rpc GetProfile(EmptyRequest) returns (PersonResponse) {
+    option (google.api.http) = {
+      get: "/api/profile"
+    };
+  }
+}
+message UsersPagedResponse {
+    repeated UserResponse results = 1;
+    int32 totalCount = 2;
+    int32 remainingCount = 3;
+}
+message EmptyRequest {}
+  message ToggleBlockRequest {
+    int32 id = 1;
+  }
+
+  message ToggleBlockResponse {
+    bool success = 1;
+  }
+  message PersonResponse {
+      int64 id = 1;
+      string name = 2;
+      string surname = 3;
+      string bio = 4;
+      string moto = 5;
+      string pictureBase64 = 6;
+    }
+  message PagedRequest {
+  int32 page = 1;
+  int32 pageSize = 2;
+  }
+  enum UserRole {
+    Administrator = 0;
+    Tourist = 1;
+    Author = 2;
+  }
+
+message UserResponse {
+    int64 id = 1;
+    string username = 2;
+    string email = 3;
+    UserRole role = 4;
+    bool isBlocked = 5;
+}

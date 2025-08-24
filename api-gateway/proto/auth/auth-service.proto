@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "proto/auth";
+
+import "google/api/annotations.proto";
+
+service AuthService {
+  rpc ValidateToken(EmptyMessage) returns (ValidateTokenResponse) {
+    option (google.api.http) = {
+      get: "/api/auth/validate"
+    };
+  }
+  rpc Login(CredentialsRequest) returns (AuthenticationTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/login"
+      body: "*"
+    };
+  }
+  rpc Register(AccountRegistrationRequest) returns (AuthenticationTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/auth"
+      body: "*"
+    };
+  }
+}
+message EmptyMessage {}
+    message CredentialsRequest {
+      string email = 1;
+      string password = 2;
+    }
+    message AccountRegistrationRequest {
+      string username = 1;
+      string password = 2;
+      string name = 3;
+      string surname = 4;
+      string bio = 5;
+      string pictureBase64 = 6;
+      string moto = 7;
+      string email = 8;
+      string role = 9;
+    }
+    message AuthenticationTokenResponse {
+      string accessToken = 1;
+      int64 id = 2;
+    }
+    message ValidateTokenResponse {
+        bool isValid = 2;
+    }
