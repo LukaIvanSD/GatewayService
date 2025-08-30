@@ -270,27 +270,30 @@ func (x *AuthenticationTokenResponse) GetId() int64 {
 	return 0
 }
 
-type ValidateTokenResponse struct {
+type TokenResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsValid       bool                   `protobuf:"varint,2,opt,name=isValid,proto3" json:"isValid,omitempty"`
+	IsValid       bool                   `protobuf:"varint,1,opt,name=isValid,proto3" json:"isValid,omitempty"`
+	Role          string                 `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
+	UserId        int64                  `protobuf:"varint,3,opt,name=userId,proto3" json:"userId,omitempty"`
+	PersonId      int64                  `protobuf:"varint,4,opt,name=personId,proto3" json:"personId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ValidateTokenResponse) Reset() {
-	*x = ValidateTokenResponse{}
+func (x *TokenResponse) Reset() {
+	*x = TokenResponse{}
 	mi := &file_auth_auth_service_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ValidateTokenResponse) String() string {
+func (x *TokenResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ValidateTokenResponse) ProtoMessage() {}
+func (*TokenResponse) ProtoMessage() {}
 
-func (x *ValidateTokenResponse) ProtoReflect() protoreflect.Message {
+func (x *TokenResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_auth_auth_service_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -302,16 +305,37 @@ func (x *ValidateTokenResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ValidateTokenResponse.ProtoReflect.Descriptor instead.
-func (*ValidateTokenResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use TokenResponse.ProtoReflect.Descriptor instead.
+func (*TokenResponse) Descriptor() ([]byte, []int) {
 	return file_auth_auth_service_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ValidateTokenResponse) GetIsValid() bool {
+func (x *TokenResponse) GetIsValid() bool {
 	if x != nil {
 		return x.IsValid
 	}
 	return false
+}
+
+func (x *TokenResponse) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
+func (x *TokenResponse) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *TokenResponse) GetPersonId() int64 {
+	if x != nil {
+		return x.PersonId
+	}
+	return 0
 }
 
 var File_auth_auth_service_proto protoreflect.FileDescriptor
@@ -335,11 +359,14 @@ const file_auth_auth_service_proto_rawDesc = "" +
 	"\x04role\x18\t \x01(\tR\x04role\"O\n" +
 	"\x1bAuthenticationTokenResponse\x12 \n" +
 	"\vaccessToken\x18\x01 \x01(\tR\vaccessToken\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\x03R\x02id\"1\n" +
-	"\x15ValidateTokenResponse\x12\x18\n" +
-	"\aisValid\x18\x02 \x01(\bR\aisValid2\xb4\x02\n" +
-	"\vAuthService\x12\\\n" +
-	"\rValidateToken\x12\x12.auth.EmptyMessage\x1a\x1b.auth.ValidateTokenResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/auth/validate\x12`\n" +
+	"\x02id\x18\x02 \x01(\x03R\x02id\"q\n" +
+	"\rTokenResponse\x12\x18\n" +
+	"\aisValid\x18\x01 \x01(\bR\aisValid\x12\x12\n" +
+	"\x04role\x18\x02 \x01(\tR\x04role\x12\x16\n" +
+	"\x06userId\x18\x03 \x01(\x03R\x06userId\x12\x1a\n" +
+	"\bpersonId\x18\x04 \x01(\x03R\bpersonId2\xa7\x02\n" +
+	"\vAuthService\x12O\n" +
+	"\bGetToken\x12\x12.auth.EmptyMessage\x1a\x13.auth.TokenResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/api/auth/validate\x12`\n" +
 	"\x05Login\x12\x18.auth.CredentialsRequest\x1a!.auth.AuthenticationTokenResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/auth/login\x12e\n" +
 	"\bRegister\x12 .auth.AccountRegistrationRequest\x1a!.auth.AuthenticationTokenResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/api/authB\fZ\n" +
 	"proto/authb\x06proto3"
@@ -362,13 +389,13 @@ var file_auth_auth_service_proto_goTypes = []any{
 	(*CredentialsRequest)(nil),          // 1: auth.CredentialsRequest
 	(*AccountRegistrationRequest)(nil),  // 2: auth.AccountRegistrationRequest
 	(*AuthenticationTokenResponse)(nil), // 3: auth.AuthenticationTokenResponse
-	(*ValidateTokenResponse)(nil),       // 4: auth.ValidateTokenResponse
+	(*TokenResponse)(nil),               // 4: auth.TokenResponse
 }
 var file_auth_auth_service_proto_depIdxs = []int32{
-	0, // 0: auth.AuthService.ValidateToken:input_type -> auth.EmptyMessage
+	0, // 0: auth.AuthService.GetToken:input_type -> auth.EmptyMessage
 	1, // 1: auth.AuthService.Login:input_type -> auth.CredentialsRequest
 	2, // 2: auth.AuthService.Register:input_type -> auth.AccountRegistrationRequest
-	4, // 3: auth.AuthService.ValidateToken:output_type -> auth.ValidateTokenResponse
+	4, // 3: auth.AuthService.GetToken:output_type -> auth.TokenResponse
 	3, // 4: auth.AuthService.Login:output_type -> auth.AuthenticationTokenResponse
 	3, // 5: auth.AuthService.Register:output_type -> auth.AuthenticationTokenResponse
 	3, // [3:6] is the sub-list for method output_type

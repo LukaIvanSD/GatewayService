@@ -7,7 +7,7 @@ option go_package = "proto/auth";
 import "google/api/annotations.proto";
 
 service AuthService {
-  rpc ValidateToken(EmptyMessage) returns (ValidateTokenResponse) {
+  rpc GetToken(EmptyMessage) returns (TokenResponse) {
     option (google.api.http) = {
       get: "/api/auth/validate"
     };
@@ -45,6 +45,9 @@ message EmptyMessage {}
       string accessToken = 1;
       int64 id = 2;
     }
-    message ValidateTokenResponse {
-        bool isValid = 2;
+    message TokenResponse {
+        bool isValid = 1;
+        string role = 2;
+        int64 userId = 3;
+        int64 personId = 4;
     }

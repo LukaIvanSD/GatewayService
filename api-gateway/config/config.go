@@ -23,7 +23,7 @@ func GetConfig() Config {
 	if gatewayAddr == "" {
 		gatewayAddr = "localhost:7070"
 	}
-	blogAddr := os.Getenv("AUTH_SERVICE_ADDRESS")
+	blogAddr := os.Getenv("BLOG_SERVICE_ADDRESS")
 	if blogAddr == "" {
 		blogAddr = "http://localhost:1234"
 	}
@@ -36,7 +36,7 @@ func GetConfig() Config {
 		AuthAndStakeholdersGRPCServiceAddress: authStakeholdersAddrGrpc,
 		Address:                               gatewayAddr,
 		AuthAndStakeholdersHTTPServiceAddress: authStakeholderAddHttp,
-		TourServiceAddress:                    blogAddr,
-		BlogServiceAddress:                    tourAddr,
+		TourServiceAddress:                    tourAddr,
+		BlogServiceAddress:                    blogAddr,
 	}
 }

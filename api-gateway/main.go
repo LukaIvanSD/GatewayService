@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -44,11 +45,14 @@ func authMiddleware(client auth.AuthServiceClient, excludedFromAuth []string) fu
 			req := &auth.EmptyMessage{}
 			md := metadata.Pairs("authorization", token)
 			ctx := metadata.NewOutgoingContext(r.Context(), md)
-			resp, err := client.ValidateToken(ctx, req)
+			resp, err := client.GetToken(ctx, req)
 			if err != nil || !resp.IsValid {
 				http.Error(w, "unauthorized", http.StatusUnauthorized)
 				return
 			}
+			r.Header.Set("X-User-Role", resp.Role)
+			r.Header.Set("X-User-Id", strconv.FormatInt(resp.UserId, 10))
+			r.Header.Set("X-Person-Id", strconv.FormatInt(resp.PersonId, 10))
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -113,6 +117,7 @@ func main() {
 			gwmux.ServeHTTP(w, r)
 			return
 		}
+		log.Println(path)
 		mux.ServeHTTP(w, r)
 	})
 
