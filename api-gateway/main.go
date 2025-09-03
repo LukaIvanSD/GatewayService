@@ -108,8 +108,9 @@ func main() {
 	mux.Handle("/api/profile/", newProxy(cfg.AuthAndStakeholdersHTTPServiceAddress))
 	mux.Handle("/api/tours", newProxy(cfg.TourServiceAddress))
 	mux.Handle("/api/tours/", newProxy(cfg.TourServiceAddress))
-	mux.Handle("/api/blog", newProxy(cfg.BlogServiceAddress))
-	mux.Handle("/api/blog/", newProxy(cfg.BlogServiceAddress))
+	mux.Handle("/api/blogs", newProxy(cfg.BlogServiceAddress))
+	mux.Handle("/api/blogs/", newProxy(cfg.BlogServiceAddress))
+	
 
 	combinedHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
@@ -125,6 +126,7 @@ func main() {
 		"/api/auth/validate",
 		"/api/auth/login",
 		"/api/auth",
+		"/api/blogs",
 	}
 
 	handlerWithMiddleware := authMiddleware(authClient, excludedFromAuth)(combinedHandler)

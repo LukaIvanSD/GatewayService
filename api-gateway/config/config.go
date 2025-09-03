@@ -13,7 +13,7 @@ type Config struct {
 func GetConfig() Config {
 	authStakeholdersAddrGrpc := os.Getenv("AUTH_STAKEHOLDERS_SERVICE_GRPC_ADDRESS")
 	if authStakeholdersAddrGrpc == "" {
-		authStakeholdersAddrGrpc = "localhost:8888"
+		authStakeholdersAddrGrpc = "127.0.0.1:8888"
 	}
 	authStakeholderAddHttp := os.Getenv("AUTH_STAKEHOLDERS_SERVICE_HTTP_ADDRESS")
 	if authStakeholderAddHttp == "" {
@@ -25,12 +25,12 @@ func GetConfig() Config {
 	}
 	blogAddr := os.Getenv("BLOG_SERVICE_ADDRESS")
 	if blogAddr == "" {
-		blogAddr = "http://localhost:1234"
+		blogAddr = "http://localhost:8083"
 	}
 
 	tourAddr := os.Getenv("TOUR_ADDRESS")
 	if tourAddr == "" {
-		tourAddr = "http://localhost:5084"
+		tourAddr = "http://localhost:8081"
 	}
 	return Config{
 		AuthAndStakeholdersGRPCServiceAddress: authStakeholdersAddrGrpc,
