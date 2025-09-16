@@ -7,6 +7,7 @@ type Config struct {
 	AuthAndStakeholdersGRPCServiceAddress string
 	AuthAndStakeholdersHTTPServiceAddress string
 	TourServiceAddress                    string
+	TourGRPCServiceAddress                string
 	BlogServiceAddress                    string
 }
 
@@ -17,7 +18,7 @@ func GetConfig() Config {
 	}
 	authStakeholderAddHttp := os.Getenv("AUTH_STAKEHOLDERS_SERVICE_HTTP_ADDRESS")
 	if authStakeholderAddHttp == "" {
-		authStakeholderAddHttp = "http://localhost:8080"
+		authStakeholderAddHttp = "http://127.0.0.1:8080"
 	}
 	gatewayAddr := os.Getenv("GATEWAY_ADDRESS")
 	if gatewayAddr == "" {
@@ -32,11 +33,18 @@ func GetConfig() Config {
 	if tourAddr == "" {
 		tourAddr = "http://localhost:8081"
 	}
+
+	tourGrpcAddr := os.Getenv("TOUR_SERVICE_GRPC_ADDRESS")
+	if tourGrpcAddr == "" {
+		tourGrpcAddr = "127.0.0.1:8887"
+	}
+
 	return Config{
 		AuthAndStakeholdersGRPCServiceAddress: authStakeholdersAddrGrpc,
 		Address:                               gatewayAddr,
 		AuthAndStakeholdersHTTPServiceAddress: authStakeholderAddHttp,
 		TourServiceAddress:                    tourAddr,
+		TourGRPCServiceAddress:                tourGrpcAddr,
 		BlogServiceAddress:                    blogAddr,
 	}
 }

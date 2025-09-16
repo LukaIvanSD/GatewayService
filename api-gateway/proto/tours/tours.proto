@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package tours;
+option go_package = "proto/tours";
+option csharp_namespace = "Tours.Api"; // ne smeta Go-u
+
+import "google/api/annotations.proto";
+
+// ===== Messages =====
+message AbandonTourExecutionRequest {
+  int64 tourExecutionId = 1; // iz URL-a
+  double latitude = 2;       // iz body-ja
+  double longitude = 3;      // iz body-ja
+}
+
+message CompleteTourExecutionRequest {
+  int64 tourExecutionId = 1; // iz URL-a
+  double latitude = 2;       // iz body-ja
+  double longitude = 3;      // iz body-ja
+}
+
+message CompletedCheckpointResponse {
+  int64 checkpointId = 1;
+  int64 completionTime = 2; // Unix timestamp (seconds)
+}
+
+message TourExecutionResponse {
+  int64 id = 1;
+  int64 tourId = 2;
+  int64 touristId = 3;
+  string status = 4;
+  int64 lastActivity = 5; // Unix timestamp (seconds)
+  double completion = 6;
+  double longitude = 7;
+  double latitude = 8;
+  repeated CompletedCheckpointResponse completedCheckpoints = 9;
+}
+
+// ===== Service =====
+service TourExecutionService {
+  rpc AbandonTourExecution(AbandonTourExecutionRequest) returns (TourExecutionResponse) {
+    option (google.api.http) = {
+      put: "/api/tours/tour-executions/abandon/{tourExecutionId}"
+      body: "*"
+    };
+  }
+
+  rpc CompleteTourExecution(CompleteTourExecutionRequest) returns (TourExecutionResponse) {
+    option (google.api.http) = {
+      put: "/api/tours/tour-executions/complete/{tourExecutionId}"
+      body: "*"
+    };
+  }
+}
