@@ -59,7 +59,6 @@ func authMiddleware(client auth.AuthServiceClient, excludedFromAuth []string) fu
 			r.Header.Set("X-User-Id", strconv.FormatInt(resp.UserId, 10))
 			r.Header.Set("X-Person-Id", strconv.FormatInt(resp.PersonId, 10))
 
-
 			r.Header.Set("Grpc-Metadata-X-User-Role", resp.Role)
 			r.Header.Set("Grpc-Metadata-X-User-Id", strconv.FormatInt(resp.UserId, 10))
 			r.Header.Set("Grpc-Metadata-X-Person-Id", strconv.FormatInt(resp.PersonId, 10))
@@ -129,23 +128,24 @@ func main() {
 	mux.Handle("/api/tours/", newProxy(cfg.TourServiceAddress))
 	mux.Handle("/api/blogs", newProxy(cfg.BlogServiceAddress))
 	mux.Handle("/api/blogs/", newProxy(cfg.BlogServiceAddress))
+	mux.Handle("/api/payment", newProxy(cfg.PaymentServiceAddress))
+	mux.Handle("/api/payment/", newProxy(cfg.PaymentServiceAddress))
 
 	// ===== Combined Handler =====
 	combinedHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
-		if pathHasPrefix(path, "/api/auth")  {
+		if pathHasPrefix(path, "/api/auth") {
 			gwmux.ServeHTTP(w, r)
 			return
 		}
 		if pathHasPrefix(path, "/api/tours/tour-executions/abandon") ||
-		pathHasPrefix(path, "/api/tours/tour-executions/complete") {
+			pathHasPrefix(path, "/api/tours/tour-executions/complete") {
 			gwmux.ServeHTTP(w, r)
 			return
 		}
 
-
-    log.Println("Proxying to HTTP:", path)
-    mux.ServeHTTP(w, r)
+		log.Println("Proxying to HTTP:", path)
+		mux.ServeHTTP(w, r)
 	})
 
 	// ===== Middleware =====

@@ -9,6 +9,7 @@ type Config struct {
 	TourServiceAddress                    string
 	TourGRPCServiceAddress                string
 	BlogServiceAddress                    string
+	PaymentServiceAddress                 string
 }
 
 func GetConfig() Config {
@@ -39,6 +40,10 @@ func GetConfig() Config {
 		tourGrpcAddr = "127.0.0.1:8887"
 	}
 
+	paymentAddr := os.Getenv("PAYMENT_ADDRESS")
+	if paymentAddr == "" {
+		paymentAddr = "http://localhost:8087"
+	}
 	return Config{
 		AuthAndStakeholdersGRPCServiceAddress: authStakeholdersAddrGrpc,
 		Address:                               gatewayAddr,
@@ -46,5 +51,6 @@ func GetConfig() Config {
 		TourServiceAddress:                    tourAddr,
 		TourGRPCServiceAddress:                tourGrpcAddr,
 		BlogServiceAddress:                    blogAddr,
+		PaymentServiceAddress:                 paymentAddr,
 	}
 }
